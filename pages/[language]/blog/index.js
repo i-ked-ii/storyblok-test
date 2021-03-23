@@ -3,7 +3,7 @@ import Layout from '../../../components/Layout';
 import Storyblok from '../../../utils/storyblok';
 
 const Blog = (props) => {
-  // console.log('props', props);
+  console.log('props', props);
   const [language] = useState(props.language);
   const [posts] = useState(props.story);
   return (
@@ -31,7 +31,7 @@ const Blog = (props) => {
                 <div className="mt-2">
                   <a
                     className="text-2xl text-gray-700 font-bold hover:text-gray-600"
-                    href={`${lang}/blog/${post.slug}`}
+                    href={`${lang}/${post.slug}`}
                   >
                     {post.content.title}
                   </a>
@@ -40,7 +40,7 @@ const Blog = (props) => {
                 <div className="flex justify-between items-center mt-4">
                   <a
                     className="text-blue-600 hover:underline"
-                    href={`${lang}/blog/${post.slug}`}
+                    href={`${lang}/${post.slug}`}
                   >
                     Read more
                   </a>
@@ -64,7 +64,7 @@ export const getStaticPaths = () => {
 
 export async function getStaticProps({ params }) {
   let language = params.language || 'en';
-  let insertLanguage = language !== 'en' ? `/${language}` : '';
+  let insertLanguage = language !== 'en' ? `${language}/` : '';
   let { data } = await Storyblok.get(`cdn/stories`, {
     starts_with: `${insertLanguage}blog/`,
   });

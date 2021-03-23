@@ -41,10 +41,7 @@ const Navigation = ({ language }) => (
         <div className="w-full md:w-auto md:flex-grow md:flex md:items-center">
           <ul className="flex flex-col mt-4 -mx-4 pt-4 border-t md:flex-row md:items-center md:mx-0 md:mt-0 md:pt-0 md:mr-4 md:ml-auto lg:mr-8 md:border-0">
             <li>
-              <a
-                href={`/${language}`}
-                className="block px-4 py-1 md:p-2 lg:px-8"
-              >
+              <a href={`/`} className="block px-4 py-1 md:p-2 lg:px-8">
                 Home
               </a>
             </li>

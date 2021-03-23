@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Layout from '../../../components/Layout';
-import BlogPost from '../../../components/BlogPost';
-import Storyblok from '../../../utils/storyblok';
+import Layout from '../../components/Layout';
+import BlogPost from '../../components/BlogPost';
+import Storyblok from '../../utils/storyblok';
 
 const BlogPosts = (props) => {
   console.log('props', props);
@@ -28,8 +28,11 @@ export const getStaticPaths = async () => {
   let data = await Storyblok.get(`cdn/stories`, {
     starts_with: `en/blog/`,
   }).then((resp) => resp.data.stories);
-  const pat = await data.map((album) => {
-    return { language: album.lang, slug: album.full_slug.toString() };
+
+  const paths = await data.map((album) => {
+    return {
+      params: { language: album.lang, slug: album.slug.toString() },
+    };
   });
 
   //   let language = 'en' || 'de';
@@ -58,28 +61,30 @@ export const getStaticPaths = async () => {
     //   },
     //   { params: { language: 'de', slug: `/de/blog/my-first-post` } },
     // ],/pages/[language]/blog/[slug].js
-    paths: [
-      { params: { language: 'en', slug: 'my-first-post' } },
-      { params: { language: 'de', slug: 'my-first-post' } },
-    ],
-    // paths,
+    // paths: [
+    //   { params: { language: 'en', slug: 'my-first-post' } },
+    //   { params: { language: 'de', slug: 'my-first-post' } },
+    // ],
+    paths,
     fallback: false,
   };
 };
 
 export const getStaticProps = async ({ params }) => {
   let language = params.language || 'en';
-  let blog = Storyblok.get(`cdn/stories`, {
-    starts_with: `${params.language === 'en' ? '' : params.language}/blog/`,
-  }).then((data) => data.stories);
 
   let data = await Storyblok.get(`cdn/stories`, {
     starts_with: `${language}/blog/`,
   }).then((resp) => resp.data.stories);
   // let sto = data.find((x) => x.full_slug);
-  // const sl = await data.json();
-  const pat = await data.map((album) => {
-    return { language: album.lang, slug: album.full_slug.toString() };
+
+  // const pat = await data.map((album) => {
+  //   return { language: album.lang, slug: album.full_slug.toString() };
+  // });
+  const paths = await data.map((album) => {
+    return {
+      params: { language: album.lang, slug: album.slug.toString() },
+    };
   });
   let ints = params.language === 'en' ? '/blog/' : `${params.language}/blog/`;
   // full_slug
@@ -93,7 +98,7 @@ export const getStaticProps = async ({ params }) => {
       language,
       // sto,
       data,
-      pat,
+      paths,
     },
   };
 };
