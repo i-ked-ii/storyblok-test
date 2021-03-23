@@ -31,9 +31,9 @@ const FeedbackForm = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const template_id = props.env.template_id;
-    const service_id = props.env.service_id;
-    const user_id = props.env.user_id;
+    const template_id = env.template_id;
+    const service_id = env.service_id;
+    const user_id = env.user_id;
     sendFeedback({
       template_id,
       service_id,
