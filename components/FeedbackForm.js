@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import emailjs from 'emailjs-com';
-import axios from 'axios';
 
 const FeedbackForm = (props) => {
-  console.log('props', props);
-  const { env } = props;
+  const { env, title } = props;
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [feedback, setFeedback] = useState('');
+  const [subject, setSubject] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formSubmitSuccessful, setFormSubmitSuccessful] = useState(false);
 
@@ -15,7 +16,15 @@ const FeedbackForm = (props) => {
   const handleCancel = () => {
     setFeedback('');
   };
-
+  const handleChangeName = (event) => {
+    setName(event.target.value);
+  };
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value);
+  };
+  const handleChangeSubject = (event) => {
+    setSubject(event.target.value);
+  };
   const handleChange = (event) => {
     setFeedback(event.target.value);
   };
@@ -57,20 +66,6 @@ const FeedbackForm = (props) => {
           console.log('FAILED...', error);
         },
       );
-    // axios
-    //   .post('https://api.emailjs.com/api/v1.0/email/send', {
-    //     type: 'POST',
-    //     data: JSON.stringify(data),
-    //     contentType: 'application/json',
-    //   })
-    //   .then(function (response) {
-    //     console.log('SUCCESS!', response.status, response.text);
-    //     setFormSubmitSuccessful(true);
-    //   })
-    //   .catch(function (error) {
-    //     console.log('FAILED...', JSON.stringify(error));
-    //     setFormSubmitSuccessful(false);
-    //   });
   };
 
   if (formSubmitted && formSubmitSuccessful) {
@@ -79,21 +74,120 @@ const FeedbackForm = (props) => {
 
   return (
     <form className="feedback-form" onSubmit={handleSubmit}>
-      <h1>Your Feedback</h1>
-      <textarea
-        className="text-input"
-        id="feedback-entry"
-        name="feedback-entry"
-        onChange={handleChange}
-        placeholder="Enter your feedback here"
-        required
-        value={feedback}
-      />
-      <div className="btn-group">
-        <button className="btn btn--cancel" onClick={handleCancel}>
-          Cancel
-        </button>
-        <input type="submit" value="Submit" className="btn btn--submit" />
+      <div className="px-4 py-5 space-y-6 sm:p-6">
+        <h1 className="text-2xl md:text-3xl">{title}</h1>
+        <div className="grid grid-cols-3 gap-6">
+          <div className="col-span-3 sm:col-span-2">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Name
+            </label>
+            <div className="mt-1 flex rounded-md shadow-sm">
+              <input
+                type="text"
+                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
+                id="name"
+                aria-describedby="name"
+                placeholder="Enter name"
+                required
+                onChange={handleChangeName}
+                value={name}
+                name="name"
+              />
+            </div>
+            <p className="mt-2 text-sm text-gray-500">
+              We'll never share your email with anyone else.
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-6">
+          <div className="col-span-3 sm:col-span-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email address
+            </label>
+            <div className="mt-1 flex rounded-md shadow-sm">
+              <input
+                type="email"
+                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
+                id="email"
+                aria-describedby="emailHelp"
+                placeholder="Enter email"
+                required
+                onChange={handleChangeEmail}
+                value={email}
+                name="email"
+              />
+            </div>
+            <p className="mt-2 text-sm text-gray-500">
+              We'll never share your email with anyone else.
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-6">
+          <div className="col-span-3 sm:col-span-2">
+            <label
+              htmlFor="subject"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Subject
+            </label>
+            <div className="mt-1 flex rounded-md shadow-sm">
+              <input
+                type="text"
+                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
+                id="subject"
+                aria-describedby="subject"
+                placeholder="Enter Subject"
+                required
+                onChange={handleChangeSubject}
+                value={subject}
+                name="subject"
+              />
+            </div>
+          </div>
+        </div>
+        <div>
+          <label
+            htmlFor="msg"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Message
+          </label>
+          <div className="mt-1">
+            <textarea
+              id="feedback-entry"
+              name="feedback-entry"
+              rows={3}
+              className="text-input shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
+              placeholder="Enter your feedback here"
+              value={feedback}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <p className="mt-2 text-sm text-gray-500">
+            Brief description for your profile. URLs are hyperlinked.
+          </p>
+        </div>
+        <div className="px-4 py-3 text-right sm:px-6">
+          <button
+            type="submit"
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3"
+          >
+            Save
+          </button>
+          <button
+            className="btn btn--cancel inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md bg-gray-300"
+            onClick={handleCancel}
+          >
+            Cancel
+          </button>
+        </div>
       </div>
     </form>
   );
