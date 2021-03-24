@@ -58,11 +58,16 @@ export const getStaticPaths = async () => {
     //   },
     //   { params: { language: 'de', slug: `/de/blog/my-first-post` } },
     // ],/pages/[language]/blog/[slug].js
-    paths: [
-      { params: { language: 'en', slug: 'my-first-post' } },
-      { params: { language: 'de', slug: 'my-first-post' } },
-    ],
-    // paths,
+    // paths: [
+    //   { params: { language: 'en', slug: 'my-first-post' } },
+    //   {
+    //     params: {
+    //       language: 'de',
+    //       slug: 'asian-women-among-eight-killed-at-three-spas',
+    //     },
+    //   },
+    // ],
+    paths: pat,
     fallback: false,
   };
 };
@@ -78,8 +83,12 @@ export const getStaticProps = async ({ params }) => {
   }).then((resp) => resp.data.stories);
   // let sto = data.find((x) => x.full_slug);
   // const sl = await data.json();
-  const pat = await data.map((album) => {
-    return { language: album.lang, slug: album.full_slug.toString() };
+  // const pat = await data.map((album) => {
+  //   return { language: album.lang, slug: album.full_slug.toString() };
+  // });
+  const pat = data.map((resp) => {
+    return resp;
+    // params: { language: 'en', slug: fields.category.toString() },
   });
   let ints = params.language === 'en' ? '/blog/' : `${params.language}/blog/`;
   // full_slug

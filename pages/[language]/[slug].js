@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import ErrorPage from 'next/error';
+
 import Layout from '../../components/Layout';
 import BlogPost from '../../components/BlogPost';
 import Storyblok from '../../utils/storyblok';
 
 const BlogPosts = (props) => {
-  console.log('props', props);
-  const [language] = useState(props.language);
-  const [posts] = useState(props.story);
+  const { language, story } = props;
+  console.log('props', story);
+  const router = useRouter();
+  const [lange] = useState(language);
+  const [posts] = useState(story);
 
   // useEffect(() => {
   //   let data = Storyblok.get(`cdn/stories`, {
@@ -16,92 +21,89 @@ const BlogPosts = (props) => {
   //     data;
   //   });
   // }, []);
+  if (router.isFallback) {
+    return <h1>Loading...</h1>;
+  }
+  if (!router.isFallback && !story) {
+    return <ErrorPage statusCode={404} />;
+  }
 
   return (
-    <Layout language={language}>
-      <BlogPost blok={posts.data.story.content} />
+    <Layout language={lange}>
+      <div className="container mx-auto mt-10 py-10 bg-white">
+        {posts ? <BlogPost blok={posts.data.story.content} /> : 'no data'}
+      </div>
     </Layout>
   );
 };
 
-export const getStaticPaths = async () => {
-  let data = await Storyblok.get(`cdn/stories`, {
+export async function getStaticPaths() {
+  // Call an external API endpoint to get posts
+  const posts = await Storyblok.get(`cdn/stories`, {
     starts_with: `en/blog/`,
-  }).then((resp) => resp.data.stories);
-
-  const paths = await data.map((album) => {
-    return {
-      params: { language: album.lang, slug: album.slug.toString() },
-    };
-  });
-
-  //   let language = 'en' || 'de';
-  //   let { data } = Storyblok.get(`cdn/stories`, {
-  //     starts_with: `${language === 'en' ? '' : language}/blog/`,
-  //   }).then((data) => data.stories);
-  // return {
-  //   paths: posts.map((posts) => {
-  //     return {
-  //       params: {
-  //         language: 'en',
-  //         slug: posts.slug,
-  //       },
-  //     };
-  //   }),
-  //   fallback: false,
-  // };
+  }).then(({ data }) => data.stories);
+  // Get the paths we want to pre-render based on posts
+  const paths = await posts.map((post) => ({
+    params: {
+      language: post.lang,
+      slug: post.slug,
+    },
+  }));
+  // We'll pre-render only these paths at build time.
+  // { fallback: false } means other routes should 404.
   return {
-    // paths: [
-    //   {
-    //     params: {
-    //       language: 'en',
-    //       // slug: allPosts?.map(({ slug }) => `/blog/${slug}`) ?? [],
-    //       slug: `/en/blog/my-first-post`,
-    //     },
-    //   },
-    //   { params: { language: 'de', slug: `/de/blog/my-first-post` } },
-    // ],/pages/[language]/blog/[slug].js
-    // paths: [
-    //   { params: { language: 'en', slug: 'my-first-post' } },
-    //   { params: { language: 'de', slug: 'my-first-post' } },
-    // ],
-    paths,
-    fallback: false,
+    paths: [
+      {
+        params: {
+          language: 'de',
+          slug: 'my-first-post',
+        },
+      },
+      {
+        params: {
+          language: 'de',
+          slug: 'asian-women-among-eight-killed-at-three-spas',
+        },
+      },
+    ],
+    // paths:
+    //   posts.length > 0
+    //     ? posts.map((post) => {
+    //         return {
+    //           params: {
+    //             language: post.lang,
+    //             slug: post.slug,
+    //           },
+    //         };
+    //       })
+    //     : [],
+    fallback: true,
   };
-};
+}
 
-export const getStaticProps = async ({ params }) => {
+// This also gets called at build time
+export async function getStaticProps({ params }) {
   let language = params.language || 'en';
 
-  let data = await Storyblok.get(`cdn/stories`, {
-    starts_with: `${language}/blog/`,
+  let blog = await Storyblok.get(`cdn/stories`, {
+    starts_with: `${params.language}/blog/`,
   }).then((resp) => resp.data.stories);
-  // let sto = data.find((x) => x.full_slug);
+  let sto = blog.find((x) => x.full_slug);
 
-  // const pat = await data.map((album) => {
-  //   return { language: album.lang, slug: album.full_slug.toString() };
-  // });
-  const paths = await data.map((album) => {
-    return {
-      params: { language: album.lang, slug: album.slug.toString() },
-    };
-  });
   let ints = params.language === 'en' ? '/blog/' : `${params.language}/blog/`;
   // full_slug
   const res = await Storyblok.get(`cdn/stories/${ints}/${params.slug}`).then(
     (item) => item,
   );
-
   return {
     props: {
       story: res ? res : false,
       language,
-      // sto,
-      data,
-      paths,
+      // params,
     },
+    revalidate: 1,
   };
-};
+}
 
 export default BlogPosts;
 

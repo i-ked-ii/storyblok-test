@@ -1,5 +1,50 @@
 import StoryblokClient from 'storyblok-js-client';
 
+let client = new StoryblokClient({
+  accessToken: '6OGHIpYFngjni2xlE9Valgtt' || process.env.STORYBLOK_API_KEY,
+});
+
+// Get all content from the news folder
+export async function getAllContentFromBlog() {
+  return await client
+    .get('cdn/stories', {
+      // version: 'draft',
+      starts_with: 'blog/',
+    })
+    .then((res) => {
+      console.log(res.data.stories);
+      return res.data.stories;
+    });
+}
+
+// Filter by boolean value in content type
+// client
+//   .get('cdn/stories', {
+//     version: 'draft',
+//     filter_query: {
+//       is_featured: {
+//         in: true,
+//       },
+//     },
+//   })
+//   .then((res) => {
+//     console.log(res.data.stories);
+//   });
+
+// Get all news and author contents
+// client
+//   .get('cdn/stories', {
+//     version: 'draft',
+//     filter_query: {
+//       component: {
+//         in: 'news,author',
+//       },
+//     },
+//   })
+//   .then((res) => {
+//     console.log(res.data.stories);
+//   });
+
 // init with access token
 const Storyblok = new StoryblokClient({
   accessToken: '6OGHIpYFngjni2xlE9Valgtt' || process.env.STORYBLOK_API_KEY,
@@ -10,7 +55,6 @@ const Storyblok = new StoryblokClient({
 });
 
 export default Storyblok;
-
 // class StoryblokService {
 //     constructor() {
 //         this.devMode = true; // Always loads draft
