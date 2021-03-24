@@ -1,7 +1,12 @@
 import StoryblokClient from 'storyblok-js-client';
 
-let client = new StoryblokClient({
+// set client
+const client = new StoryblokClient({
   accessToken: '6OGHIpYFngjni2xlE9Valgtt' || process.env.STORYBLOK_API_KEY,
+  cache: {
+    clear: 'auto',
+    type: 'memory',
+  },
 });
 
 // Get all content from the news folder
@@ -17,6 +22,51 @@ export async function getAllContentFromBlog() {
     });
 }
 
+export async function getAllPostSlug() {
+  let data = await client
+    .get(`cdn/stories`, {
+      starts_with: `en/blog/`,
+    })
+    .then((resp) => resp.data.stories);
+
+  // Returns an array that looks like this:
+  // [
+  //   {
+  //     params: {
+  //       language: 'de',
+  //       slug: 'my-first-post',
+  //     },
+  //   },
+  //   {
+  //     params: {
+  //       language: 'de',
+  //       slug: 'asian-women-among-eight-killed-at-three-spas',
+  //     },
+  //   },
+  // ],
+  return data.map((post) => {
+    return {
+      params: {
+        language: post.lang,
+        slug: post.slug,
+        // fileName.replace(/\.md$/, '')
+      },
+    };
+  });
+}
+// get Content By slug
+export async function getPostBySlug(lang, slug) {
+  const entries = await client
+    .get(`cdn/stories`, {
+      starts_with: `cdn/stories/${lang}/${slug}`,
+    })
+    .then((resp) => resp.data);
+  if (entries.data) {
+    return entries.data;
+  }
+  // eslint-disable-next-line no-console
+  console.log(`Error getting Entries for ${entries}.`);
+}
 // Filter by boolean value in content type
 // client
 //   .get('cdn/stories', {
