@@ -33,6 +33,7 @@ const BlogPosts = (props) => {
   return (
     <Layout language={lange}>
       <div className="container mx-auto mt-10 py-10 bg-white">
+        <BlogPost blok={posts.story.content} />
         {/* {posts ? <BlogPost blok={posts.data.story.content} /> : 'no data'} */}
       </div>
     </Layout>
@@ -65,24 +66,24 @@ export async function getStaticPaths() {
 
 // This also gets called at build time
 export async function getStaticProps({ params }) {
-  const { language, slug } = params;
-  const post2 = await getPostBySlug(language, slug);
+  // const { language, slug } = params;
+  // const post2 = await getPostBySlug(language, slug);
 
-  // let language = params.language || 'en';
+  let language = params.language || 'en';
 
-  // let blog = await Storyblok.get(`cdn/stories`, {
-  //   starts_with: `${params.language}/blog/`,
-  // }).then((resp) => resp.data.stories);
+  let blog = await Storyblok.get(`cdn/stories`, {
+    starts_with: `${params.language}/blog/`,
+  }).then((resp) => resp.data.stories);
   // let sto = blog.find((x) => x.full_slug);
 
-  // let ints = params.language === 'en' ? '/blog/' : `${params.language}/blog/`;
-  // // full_slug
-  // const res = await Storyblok.get(`cdn/stories/${ints}/${params.slug}`).then(
-  //   (item) => item,
-  // );
+  let ints = params.language === 'en' ? '/blog/' : `${params.language}/blog/`;
+  // full_slug
+  const res = await Storyblok.get(`cdn/stories/${ints}/${params.slug}`).then(
+    (item) => item.data,
+  );
   return {
     props: {
-      story: post2,
+      story: res,
       language,
       // params,
     },
