@@ -46,50 +46,58 @@ export async function getStaticPaths() {
   // We'll pre-render only these paths at build time.
   // { fallback: false } means other routes should 404.
   return {
-    paths: [
-      {
-        params: {
-          language: 'de',
-          slug: 'my-first-post',
+    paths:
+      // posts,
+      [
+        {
+          params: {
+            language: 'de',
+            slug: 'my-first-post',
+          },
         },
-      },
-      {
-        params: {
-          language: 'de',
-          slug: 'asian-women-among-eight-killed-at-three-spas',
+        {
+          params: {
+            language: 'de',
+            slug: 'asian-women-among-eight-killed-at-three-spas',
+          },
         },
-      },
-    ],
+      ],
     fallback: false,
   };
 }
 
 // This also gets called at build time
-export async function getStaticProps({ params }) {
+export const getStaticProps = async ({ params }) => {
   // const { language, slug } = params;
-  // const post2 = await getPostBySlug(language, slug);
+  try {
+    //fetcher
+    // const post2 = await getPostBySlug(language, slug);
+    let language = params.language || 'en';
 
-  let language = params.language || 'en';
+    let blog = await Storyblok.get(`cdn/stories`, {
+      starts_with: `${params.language}/blog/`,
+    }).then((resp) => resp.data.stories);
+    // let sto = blog.find((x) => x.full_slug);
 
-  let blog = await Storyblok.get(`cdn/stories`, {
-    starts_with: `${params.language}/blog/`,
-  }).then((resp) => resp.data.stories);
-  // let sto = blog.find((x) => x.full_slug);
-
-  let ints = params.language === 'en' ? '/blog/' : `${params.language}/blog/`;
-  // full_slug
-  const res = await Storyblok.get(`cdn/stories/${ints}/${params.slug}`).then(
-    (item) => item.data,
-  );
-  return {
-    props: {
-      story: res,
-      language,
-      // params,
-    },
-    revalidate: 1,
-  };
-}
+    let ints = params.language === 'en' ? '/blog/' : `${params.language}/blog/`;
+    // full_slug
+    const res = await Storyblok.get(`cdn/stories/${ints}/${params.slug}`).then(
+      (item) => item.data,
+    );
+    return {
+      props: {
+        story: res,
+        language,
+        // params,
+      },
+      revalidate: 1,
+    };
+  } catch {
+    return {
+      notFound: true,
+    };
+  }
+};
 
 export default BlogPosts;
 
