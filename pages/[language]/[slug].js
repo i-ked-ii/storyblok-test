@@ -10,7 +10,7 @@ import { getAllPostSlug, getPostBySlug } from '../../utils/storyblok';
 
 const BlogPosts = (props) => {
   const { language, story } = props;
-  console.log('props', story);
+  // console.log('props', story);
   const router = useRouter();
   const [lange] = useState(language);
   const [posts] = useState(story);
@@ -33,7 +33,7 @@ const BlogPosts = (props) => {
   return (
     <Layout language={lange}>
       <div className="container mx-auto mt-10 py-10 bg-white">
-        <BlogPost blok={posts.story.content} />
+        <BlogPost blok={story && story.story} />
         {/* {posts ? <BlogPost blok={posts.data.story.content} /> : 'no data'} */}
       </div>
     </Layout>
@@ -61,7 +61,7 @@ export async function getStaticPaths() {
     //     },
     //   },
     // ],
-    fallback: false,
+    fallback: true,
   };
 }
 
