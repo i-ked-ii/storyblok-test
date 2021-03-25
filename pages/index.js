@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 import Page from '../components/Page';
 import Layout from '../components/Layout';
+import Header from '../components/Header';
 
 // The Storyblok Client
 import Storyblok from '../utils/storyblok';
@@ -16,6 +17,7 @@ export default function Home(props) {
 
   return (
     <Layout language={language}>
+      <Header />
       <Page content={story.content} />
     </Layout>
   );

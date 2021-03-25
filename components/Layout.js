@@ -1,17 +1,23 @@
 import Head from './Head';
-import Navigation from './Navigation';
-import Footer from './Footer';
+import Footer from './FooterComponents';
+import CardFeed from './CardFeed';
+import Hero from './SectionHero';
+import HeroSection from './HeroSection';
+import Nav from './Nav';
 // import Storyblok from '../utils/storyblok';
 
 const Layout = ({ children, language }) => (
   <div className="bg-gray-300 relative overflow-hidden">
     <Head />
-    <Navigation language={language} />
+    <Nav language={language} />
     <div className="max-w-7xl mx-auto">
       {children}
-      <Footer />
       {/* {Storyblok.bridge()} */}
+      <HeroSection />
+      <Hero />
+      <CardFeed />
     </div>
+    <Footer />
   </div>
 );
 
