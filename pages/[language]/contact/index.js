@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Layout from '../../../components/Layout';
+import Layout from '../../../components/commons/layouts';
 import FeedbackForm from '../../../components/FeedbackForm';
 
 const Contact = (props) => {

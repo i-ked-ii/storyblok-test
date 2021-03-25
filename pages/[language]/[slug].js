@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import ErrorPage from 'next/error';
 
-import Layout from '../../components/Layout';
+import Layout from '../../components/commons/layouts';
 import BlogPost from '../../components/BlogPost';
 import Storyblok from '../../utils/storyblok';
 
@@ -50,7 +50,7 @@ export async function getStaticPaths() {
       starts_with: `en/blog/`,
     }).then((resp) => resp.data.stories);
     return {
-      paths: data.map((post) => {
+      paths: await data.map((post) => {
         return {
           params: {
             language: post.lang,
@@ -58,7 +58,7 @@ export async function getStaticPaths() {
           },
         };
       }),
-      fallback: true,
+      fallback: false,
     };
   } catch {
     return {

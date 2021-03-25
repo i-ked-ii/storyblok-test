@@ -29,6 +29,18 @@ const nextConfigs = {
   //     // { source: '/:language/blog/:slug', destination: '/:language/blog/:slug' },
   //   ];
   // },
+  async rewrites() {
+    return [
+      {
+        source: '/:slug*.html', // Old url with .html
+        destination: '/:slug*', // Redirect without .html
+      },
+      // Optional Language
+      // Query object shape: { lang?: string }
+      { source: '/:language(en|de)?/contact', destination: '/contact' },
+      // { source: '/:language(en|de)?/blog', destination: '/blog' },
+    ];
+  },
 };
 
 module.exports = withPlugins(

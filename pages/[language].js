@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // import Head from 'next/head';
 
 import Page from '../components/Page';
-import Layout from '../components/Layout';
+import Layout from '../components/commons/layouts';
 
 // The Storyblok Client
 import Storyblok from '../utils/storyblok';

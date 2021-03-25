@@ -2,26 +2,49 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 // import Head from 'next/head';
 
+import { Carousel } from '../components/commons';
 import Page from '../components/Page';
-import Layout from '../components/Layout';
+import Layout from '../components/commons/layouts';
 import Header from '../components/Header';
 
 // The Storyblok Client
 import Storyblok from '../utils/storyblok';
 
-export default function Home(props) {
+const images = [
+  {
+    img: '/assets/images/beer_public_assets_images_google-header@2x.png',
+    title: 'test 1',
+  },
+  {
+    img: '/assets/images/beer_public_assets_images_google-header@2x.png',
+    title: 'test 2',
+  },
+  {
+    img: '/assets/images/beer_public_assets_images_google-header@2x.png',
+    title: 'test 3',
+  },
+  {
+    img: '/assets/images/beer_public_assets_images_google-header@2x.png',
+    title: 'test 4',
+  },
+];
+
+const Home = (props) => {
+  const { language, story, buildTimestamp } = props;
   console.log('props', props);
   const router = useRouter();
-  const [language] = useState(props.language);
-  const [story] = useState(props.story);
+  const [lange] = useState(language);
+  const [stories] = useState(story);
 
   return (
-    <Layout language={language}>
+    <Layout language={lange}>
+      <Carousel slideValues={images} align="center" />
       <Header />
-      <Page content={story.content} />
+      <Page content={stories.content} />
+      App built at: {buildTimestamp}
     </Layout>
   );
-}
+};
 
 export async function getStaticPaths() {
   // loads the story from the Storyblok API
@@ -55,10 +78,11 @@ export async function getStaticProps({ params }) {
       language,
       tt: stories ? stories : [],
       // post: cont ? cont : [],
+      buildTimestamp: Date.now(),
     },
   };
 }
-
+export default Home;
 // export default class Home extends Component {
 //   constructor(props) {
 //     super(props);

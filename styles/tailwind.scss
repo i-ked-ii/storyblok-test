@@ -2,6 +2,8 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@import 'slide';
+
 [type='text'], [type='email'], [type='url'], [type='password'], [type='number'], [type='date'], [type='month'], [type='search'], [type='tel'], [type='time'], [multiple], textarea, select {
     -webkit-appearance: none;
     -moz-appearance: none;

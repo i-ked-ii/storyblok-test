@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Layout from '../../../components/Layout';
+import Layout from '../../../components/commons/layouts';
 import BlogPost from '../../../components/BlogPost';
 import Storyblok from '../../../utils/storyblok';
 

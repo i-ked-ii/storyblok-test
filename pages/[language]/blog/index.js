@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import moment from 'moment';
 
-import Layout from '../../../components/Layout';
+import Layout from '../../../components/commons/layouts';
 import Storyblok from '../../../utils/storyblok';
 
 const Blog = (props) => {
@@ -36,8 +36,7 @@ const Blog = (props) => {
                       </a>
                     </Link>
                     <span className="text-gray-600">
-                      — 28 Dec 2020
-                      {moment(post.created_at).format('ll')}
+                      {`— ${moment(post.created_at).format('ll')}`}
                     </span>
                   </p>
                   <Link href="/[language]/[slug]" as={`${lang}/${post.slug}`}>
