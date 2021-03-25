@@ -23,12 +23,26 @@ export async function getAllContentFromBlog() {
 }
 
 export async function getAllPostSlug() {
-  let data = await client
-    .get(`cdn/stories`, {
-      starts_with: `en/blog/`,
-    })
-    .then((resp) => resp.data.stories);
-
+  try {
+    let data = await client
+      .get(`cdn/stories`, {
+        starts_with: `en/blog/`,
+      })
+      .then((resp) => resp.data.stories);
+    return data.map((post) => {
+      return {
+        params: {
+          language: post.lang,
+          slug: post.slug,
+          // fileName.replace(/\.md$/, '')
+        },
+      };
+    });
+  } catch {
+    return {
+      params: {},
+    };
+  }
   // Returns an array that looks like this:
   // [
   //   {
@@ -44,15 +58,6 @@ export async function getAllPostSlug() {
   //     },
   //   },
   // ],
-  return data.map((post) => {
-    return {
-      params: {
-        language: post.lang,
-        slug: post.slug,
-        // fileName.replace(/\.md$/, '')
-      },
-    };
-  });
 }
 // get Content By slug
 export async function getPostBySlug(lang, slug) {

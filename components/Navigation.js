@@ -50,12 +50,12 @@ const Navigation = ({ language }) => (
               </Link>
             </li>
             <li>
-              <Link href={`/${language}/blog`}>
+              <Link href="/[language]/blog" as={`/${language}/blog`}>
                 <a className="block px-4 py-1 md:p-2 lg:px-8">Blog</a>
               </Link>
             </li>
             <li>
-              <Link href={`/${language}/contact`}>
+              <Link href="/[language]/contact" as={`/${language}/contact`}>
                 <a className="block px-4 py-1 md:p-2 lg:px-8">Contact</a>
               </Link>
             </li>

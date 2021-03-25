@@ -46,22 +46,21 @@ export async function getStaticPaths() {
   // We'll pre-render only these paths at build time.
   // { fallback: false } means other routes should 404.
   return {
-    paths:
-      // posts,
-      [
-        {
-          params: {
-            language: 'de',
-            slug: 'my-first-post',
-          },
-        },
-        {
-          params: {
-            language: 'de',
-            slug: 'asian-women-among-eight-killed-at-three-spas',
-          },
-        },
-      ],
+    paths: posts,
+    // [
+    //   {
+    //     params: {
+    //       language: 'de',
+    //       slug: 'my-first-post',
+    //     },
+    //   },
+    //   {
+    //     params: {
+    //       language: 'de',
+    //       slug: 'asian-women-among-eight-killed-at-three-spas',
+    //     },
+    //   },
+    // ],
     fallback: false,
   };
 }

@@ -4,7 +4,6 @@ import Layout from '../../../components/Layout';
 import Storyblok from '../../../utils/storyblok';
 
 const Blog = (props) => {
-  console.log('props', props);
   const [language] = useState(props.language);
   const [posts] = useState(props.story);
   return (
@@ -30,7 +29,7 @@ const Blog = (props) => {
                   </span>
                 </div>
                 <div className="mt-2">
-                  <Link href={`${lang}/${post.slug}`}>
+                  <Link href="/[language]/[slug]" as={`${lang}/${post.slug}`}>
                     <a className="text-2xl text-gray-700 font-bold hover:text-gray-600">
                       {post.content.title}
                     </a>
@@ -38,7 +37,7 @@ const Blog = (props) => {
                   <p className="mt-2 text-gray-600">{post.content.intro}</p>
                 </div>
                 <div className="flex justify-between items-center mt-4">
-                  <Link href={`${lang}/${post.slug}`}>
+                  <Link href="/[language]/[slug]" as={`${lang}/${post.slug}`}>
                     <a className="text-blue-600 hover:underline">Read more</a>
                   </Link>
                 </div>
