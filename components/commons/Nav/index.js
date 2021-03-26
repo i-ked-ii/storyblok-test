@@ -70,16 +70,6 @@ const Nav = (props) => {
                 </a>
               </Link>
             </li>
-            <li>
-              <a
-                href="/"
-                aria-label="About us"
-                title="About us"
-                className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
-              >
-                About us
-              </a>
-            </li>
           </ul>
         </div>
         <ul className="flex items-center hidden space-x-4 lg:flex">
@@ -175,7 +165,6 @@ const Nav = (props) => {
                 <nav>
                   <ul className="space-y-4">
                     <li>
-                      <a href="/">Product</a>
                       <Link href={`/`}>
                         <a
                           aria-label="Our product"

@@ -4,9 +4,13 @@ import ErrorPage from 'next/error';
 
 import Layout from '../../components/commons/layouts';
 import BlogPost from '../../components/BlogPost';
-import Storyblok from '../../utils/storyblok';
+import Storyblok, { getAllContentFromBlog } from '../../utils/storyblok';
 
-import { getAllPostSlug, getPostBySlug } from '../../utils/storyblok';
+import {
+  getAllPostSlug,
+  getPostBySlug,
+  getAllEvents,
+} from '../../utils/storyblok';
 
 const BlogPosts = (props) => {
   const { language, story } = props;
@@ -23,9 +27,11 @@ const BlogPosts = (props) => {
   //     data;
   //   });
   // }, []);
+
   if (router.isFallback) {
     return <h1>Loading...</h1>;
   }
+
   if (!router.isFallback && !story) {
     return <ErrorPage statusCode={404} />;
   }
@@ -42,43 +48,22 @@ const BlogPosts = (props) => {
 
 export async function getStaticPaths() {
   // Call an external API endpoint to get posts
-  // const posts = await getAllPostSlug();
+  const allPost = await getAllContentFromBlog();
+  const paths = allPost.map((post) => {
+    return {
+      params: {
+        language: post.lang,
+        slug: post.slug,
+      },
+    };
+  });
   // We'll pre-render only these paths at build time.
   // { fallback: false } means other routes should 404.
-  try {
-    let data = await Storyblok.get(`cdn/stories`, {
-      starts_with: `en/blog/`,
-    }).then((resp) => resp.data.stories);
-    return {
-      paths: await data.map((post) => {
-        return {
-          params: {
-            language: post.lang,
-            slug: post.slug,
-          },
-        };
-      }),
-      fallback: true,
-    };
-  } catch {
-    return {
-      paths: [
-        {
-          params: {
-            language: 'de',
-            slug: 'my-first-post',
-          },
-        },
-        {
-          params: {
-            language: 'de',
-            slug: 'asian-women-among-eight-killed-at-three-spas',
-          },
-        },
-      ],
-      fallback: false,
-    };
-  }
+  return {
+    paths,
+    // fallback: true,
+    fallback: false,
+  };
 }
 
 // This also gets called at build time

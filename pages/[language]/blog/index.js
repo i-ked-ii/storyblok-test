@@ -3,13 +3,18 @@ import Link from 'next/link';
 import moment from 'moment';
 
 import Layout from '../../../components/commons/layouts';
-import Storyblok from '../../../utils/storyblok';
+import Storyblok, {
+  getAllContentFromBlog,
+  getAllEvents,
+} from '../../../utils/storyblok';
 
 const Blog = (props) => {
-  const [language] = useState(props.language);
-  const [posts] = useState(props.story);
+  console.log('props', props);
+  const { language, allPost } = props;
+  const [lange] = useState(language);
+  const [posts] = useState(allPost);
   return (
-    <Layout language={language}>
+    <Layout language={lange}>
       <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-8 lg:py-20">
         <div className="grid md:gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:max-w-sm sm:mx-auto md:max-w-full xl:max-w-full">
           {posts.map((post) => {
@@ -20,7 +25,7 @@ const Blog = (props) => {
                 key={post.slug}
               >
                 <img
-                  src="https://images.pexels.com/photos/2408666/pexels-photo-2408666.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500"
+                  src={post.content.image}
                   className="object-cover w-full h-64"
                   alt=""
                 />
@@ -77,14 +82,19 @@ export const getStaticPaths = () => {
 
 export async function getStaticProps({ params }) {
   let language = params.language || 'en';
-  let insertLanguage = language !== 'en' ? `${language}/` : '';
-  let { data } = await Storyblok.get(`cdn/stories`, {
-    starts_with: `${insertLanguage}blog/`,
-  });
+  // let insertLanguage = language !== 'en' ? `${language}/` : '';
+  const getAll = await getAllEvents();
+  const allPost = await getAllContentFromBlog();
+
+  // let { data } = await Storyblok.get(`cdn/stories`, {
+  //   starts_with: `${insertLanguage}blog/`,
+  // });
 
   return {
     props: {
-      story: data ? data.stories : false,
+      // story: data ? data.stories : false,
+      getAll,
+      allPost,
       language,
     },
   };
