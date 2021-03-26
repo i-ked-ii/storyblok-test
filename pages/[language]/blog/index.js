@@ -6,6 +6,7 @@ import Layout from '../../../components/commons/layouts';
 import Storyblok, {
   getAllContentFromBlog,
   getAllEvents,
+  getLink,
 } from '../../../utils/storyblok';
 
 const Blog = (props) => {
@@ -15,7 +16,7 @@ const Blog = (props) => {
   const [posts] = useState(allPost);
   return (
     <Layout language={lange}>
-      <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-8 lg:py-20">
+      <div className="blog-wrapper px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-8 lg:py-20">
         <div className="grid md:gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:max-w-sm sm:mx-auto md:max-w-full xl:max-w-full">
           {posts.map((post) => {
             const lang = post.lang === 'default' ? '/en' : `/${post.lang}`;
@@ -75,7 +76,7 @@ const Blog = (props) => {
 export const getStaticPaths = () => {
   // return the story from Storyblok and whether preview mode is active
   return {
-    paths: [{ params: { language: 'en' } }, { params: { language: 'de' } }],
+    paths: [{ params: { language: 'en' } }, { params: { language: 'th' } }],
     fallback: false,
   };
 };
@@ -85,7 +86,7 @@ export async function getStaticProps({ params }) {
   // let insertLanguage = language !== 'en' ? `${language}/` : '';
   const getAll = await getAllEvents();
   const allPost = await getAllContentFromBlog();
-
+  const allLink = await getLink(language);
   // let { data } = await Storyblok.get(`cdn/stories`, {
   //   starts_with: `${insertLanguage}blog/`,
   // });
@@ -93,6 +94,7 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       // story: data ? data.stories : false,
+      allLink,
       getAll,
       allPost,
       language,

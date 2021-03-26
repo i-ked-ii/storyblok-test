@@ -17,6 +17,15 @@ export async function getAllEvents() {
   return stories;
 }
 
+export async function getHome() {
+  const response = await fetch(
+    `https://api.storyblok.com/v1/cdn/stories/home?token=${process.env.STORYBLOK_API_KEY}`,
+  );
+
+  const { story } = await response.json();
+  return story;
+}
+
 // Get all content from the news folder
 export async function getAllContentFromBlog() {
   const response = await fetch(
@@ -33,8 +42,12 @@ function parsePostSlug({ post }) {
   };
 }
 
-function parsePostSlugEntries(entries, cb = parsePostSlug) {
-  return entries?.items?.map(cb);
+export async function getLink(lang) {
+  const response = await fetch(
+    `https://api.storyblok.com/v1/cdn/links/?starts_with=${lang}/&token=${process.env.STORYBLOK_API_KEY}`,
+  );
+  const { links } = await response.json();
+  return links;
 }
 
 // get all slugs of posts

@@ -69,31 +69,24 @@ const Carousel = ({ slideValues, url, asPath, className, play, align }) => {
             }`}
           >
             {/* top-1/2 left-1/2 translate-center */}
-            <Link
-              href={{
-                pathname: `${asPath}`,
-              }}
-              as={`${url}/${item.title}`}
+            <a
+              className={`caption_text text-white leading-normal z-20 ${
+                align === 'center'
+                  ? 'w-full h-full flex absolute top-1/2 left-1/2 translate-center items-center justify-center'
+                  : 'container block mx-auto px-4 sm:px-6 lg:px-8 left-2/4'
+              }`}
             >
-              <a
-                className={`caption_text text-white leading-normal z-20 ${
-                  align === 'center'
-                    ? 'w-full h-full flex absolute top-1/2 left-1/2 translate-center items-center justify-center'
-                    : 'container block mx-auto px-4 sm:px-6 lg:px-8 left-2/4'
-                }`}
-              >
-                {play === true ? (
-                  <span className="play">
-                    <FaPlay />
-                  </span>
-                ) : (
-                  <Fragment>
-                    <span className="text-3xl capitalize">{item.title}</span>
-                    <p>{item.caption ? item.caption : ''}</p>
-                  </Fragment>
-                )}
-              </a>
-            </Link>
+              {play === true ? (
+                <span className="play">
+                  <FaPlay />
+                </span>
+              ) : (
+                <Fragment>
+                  <span className="text-3xl capitalize">{item.title}</span>
+                  <p>{item.caption ? item.caption : ''}</p>
+                </Fragment>
+              )}
+            </a>
           </figcaption>
         </figure>
       ))}
