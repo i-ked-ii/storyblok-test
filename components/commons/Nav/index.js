@@ -84,11 +84,11 @@ const Nav = (props) => {
           </li>
           <li>
             <a
-              href="/de"
+              href="/th"
               className={`block px-4 py-1 md:p-2 rounded-lg lg:px-4 
-          ${language === 'de' ? 'bg-black text-white' : ''}`}
+          ${language === 'th' ? 'bg-black text-white' : ''}`}
             >
-              DE
+              TH
             </a>
           </li>
         </ul>
@@ -223,12 +223,12 @@ const Nav = (props) => {
                     </li>
                     <li>
                       <a
-                        href="/de"
+                        href="/th"
                         className={`block px-4 py-1 md:p-2 rounded-lg lg:px-4 ${
-                          language === 'de' ? 'bg-black text-white' : ''
+                          language === 'th' ? 'bg-black text-white' : ''
                         }`}
                       >
-                        DE
+                        TH
                       </a>
                     </li>
                   </ul>
