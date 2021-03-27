@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import ErrorPage from 'next/error';
 
 import Layout from '../../components/commons/layouts';
 import BlogPost from '../../components/BlogPost';
-import Storyblok, { getAllContentFromBlog } from '../../utils/storyblok';
-
-import { getPostBySlug } from '../../utils/storyblok';
+import Storyblok, { getPostBySlug } from '../../utils/storyblok';
 
 const BlogPosts = (props) => {
   const { language, story } = props;
-  console.log('props', props);
   const router = useRouter();
 
   // useEffect(() => {
@@ -41,7 +38,6 @@ const BlogPosts = (props) => {
 
 export async function getStaticPaths() {
   // Call an external API endpoint to get posts
-  const allPost = await getAllContentFromBlog();
   let { data } = await Storyblok.get('cdn/links/', {});
   // let lange = 'th' || 'en';
   let paths = [];
