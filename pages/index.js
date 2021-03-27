@@ -8,7 +8,7 @@ import Layout from '../components/commons/layouts';
 import Header from '../components/Header';
 
 // The Storyblok Client
-import Storyblok from '../utils/storyblok';
+import Storyblok, { getHome } from '../utils/storyblok';
 
 const images = [
   {
@@ -30,17 +30,17 @@ const images = [
 ];
 
 const Home = (props) => {
-  const { language, story, buildTimestamp } = props;
-  console.log('props', props);
+  const { language, story, buildTimestamp, homepage } = props;
+  console.log('props', homepage);
   const router = useRouter();
   const [lange] = useState(language);
-  const [stories] = useState(story);
+  const [home] = useState(homepage);
 
   return (
     <Layout language={lange}>
       <Carousel slideValues={images} align="center" />
       <Header />
-      <Page content={stories.content} />
+      <Page content={home.content} />
       App built at: {buildTimestamp}
     </Layout>
   );
@@ -68,6 +68,7 @@ export async function getStaticProps({ params }) {
   let stories = await Storyblok.get(`cdn/stories/home`).then((data) => {
     data.story;
   });
+  const homepage = await getHome();
   // let cont = stories.content.map((item) => {
   //   item.body;
   // });
@@ -76,6 +77,7 @@ export async function getStaticProps({ params }) {
     props: {
       story: data ? data.story : false,
       language,
+      homepage,
       tt: stories ? stories : [],
       // post: cont ? cont : [],
       buildTimestamp: Date.now(),

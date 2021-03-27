@@ -1,6 +1,5 @@
 import Head from '../Head';
 import Footer from '../Footer';
-import CardFeed from '../../views/CardFeed';
 import Hero from '../../views/SectionHero';
 import HeroSection from '../../views/HeroSection';
 import Nav from '../Nav';
@@ -15,7 +14,6 @@ const Layout = ({ children, language }) => (
       {children}
       <HeroSection />
       <Hero />
-      <CardFeed />
     </div>
     <Footer />
   </div>

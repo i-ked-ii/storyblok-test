@@ -5,7 +5,10 @@ const FeaturedPosts = ({ blok }) => {
   // console.log('blok', blok);
   return (
     <SbEditable content={blok} key={blok._uid}>
-      <div className="py-8 mb-6 container mx-auto text-left" key={blok._uid}>
+      <div
+        className="featured-post py-8 mb-6 container mx-auto text-left"
+        key={blok._uid}
+      >
         <div className="relative">
           <h2 className="relative font-serif text-4xl z-10 text-primary">
             {blok.title}

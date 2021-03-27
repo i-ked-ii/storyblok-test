@@ -9,69 +9,65 @@ const client = new StoryblokClient({
   },
 });
 
-// Get all content from the news folder
-export async function getAllContentFromBlog() {
-  return await client
-    .get('cdn/stories', {
-      // version: 'draft',
-      starts_with: 'blog/',
-    })
-    .then((res) => {
-      console.log(res.data.stories);
-      return res.data.stories;
-    });
+export async function getAllEvents() {
+  const response = await fetch(
+    `https://api.storyblok.com/v1/cdn/stories?token=${process.env.STORYBLOK_API_KEY}`,
+  );
+  const { stories } = await response.json();
+  return stories;
 }
 
-export async function getAllPostSlug() {
-  try {
-    let data = await client
-      .get(`cdn/stories`, {
-        starts_with: `en/blog/`,
-      })
-      .then((resp) => resp.data.stories);
-    return data.map((post) => {
-      return {
-        params: {
-          language: post.lang,
-          slug: post.slug,
-          // fileName.replace(/\.md$/, '')
-        },
-      };
-    });
-  } catch {
-    return {
-      params: {},
-    };
-  }
-  // Returns an array that looks like this:
-  // [
-  //   {
-  //     params: {
-  //       language: 'de',
-  //       slug: 'my-first-post',
-  //     },
-  //   },
-  //   {
-  //     params: {
-  //       language: 'de',
-  //       slug: 'asian-women-among-eight-killed-at-three-spas',
-  //     },
-  //   },
-  // ],
+export async function getHome() {
+  const response = await fetch(
+    `https://api.storyblok.com/v1/cdn/stories/home?token=${process.env.STORYBLOK_API_KEY}`,
+  );
+
+  const { story } = await response.json();
+  return story;
 }
+
+// Get all content from the news folder
+export async function getAllContentFromBlog(slug) {
+  const response = await fetch(
+    `https://api.storyblok.com/v1/cdn/stories/?starts_with=th/blog/&token=${process.env.STORYBLOK_API_KEY}`,
+  );
+
+  const { stories } = await response.json();
+  return stories;
+}
+
+function parsePostSlug({ post }) {
+  return {
+    slug: post.full_slug,
+  };
+}
+
+export async function getLink(lang) {
+  const response = await fetch(
+    `https://api.storyblok.com/v1/cdn/links/?starts_with=${lang}/&token=${process.env.STORYBLOK_API_KEY}`,
+  );
+  const { links } = await response.json();
+  return links;
+}
+
+// get all slugs of posts
+export async function getAllPostsWithSlug(lang) {
+  const response = await fetch(
+    `https://api.storyblok.com/v1/cdn/stories/?starts_with=${lang}/&token=${process.env.STORYBLOK_API_KEY}`,
+  );
+  const { stories } = await response.json();
+  return stories;
+}
+
 // get Content By slug
-export async function getPostBySlug(lang, slug) {
-  const entries = await client
-    .get(`cdn/stories`, {
-      starts_with: `cdn/stories/${lang}/${slug}`,
-    })
-    .then((resp) => resp.data);
-  if (entries.data) {
-    return entries.data;
-  }
-  // eslint-disable-next-line no-console
-  console.log(`Error getting Entries for ${entries}.`);
+export async function getPostBySlug(full_slug) {
+  const response = await fetch(
+    `https://api.storyblok.com/v1/cdn/stories/${full_slug}?token=${process.env.STORYBLOK_API_KEY}`,
+  );
+  const { story } = await response.json();
+  return story;
 }
+
 // Filter by boolean value in content type
 // client
 //   .get('cdn/stories', {

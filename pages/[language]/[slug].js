@@ -1,19 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import ErrorPage from 'next/error';
 
 import Layout from '../../components/commons/layouts';
 import BlogPost from '../../components/BlogPost';
-import Storyblok from '../../utils/storyblok';
-
-import { getAllPostSlug, getPostBySlug } from '../../utils/storyblok';
+import Storyblok, { getPostBySlug } from '../../utils/storyblok';
 
 const BlogPosts = (props) => {
   const { language, story } = props;
-  console.log('props', story);
   const router = useRouter();
-  const [lange] = useState(language);
-  const [posts] = useState(story);
 
   // useEffect(() => {
   //   let data = Storyblok.get(`cdn/stories`, {
@@ -23,18 +18,19 @@ const BlogPosts = (props) => {
   //     data;
   //   });
   // }, []);
+
   if (router.isFallback) {
     return <h1>Loading...</h1>;
   }
+
   if (!router.isFallback && !story) {
     return <ErrorPage statusCode={404} />;
   }
 
   return (
-    <Layout language={lange}>
+    <Layout language={language}>
       <div className="container mx-auto mt-10 py-10 bg-white">
-        <BlogPost blok={story && story.story.content} />
-        {/* {posts ? <BlogPost blok={posts.data.story.content} /> : 'no data'} */}
+        <BlogPost blok={story && story.content} />
       </div>
     </Layout>
   );
@@ -42,95 +38,35 @@ const BlogPosts = (props) => {
 
 export async function getStaticPaths() {
   // Call an external API endpoint to get posts
-  // const posts = await getAllPostSlug();
-  // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
-  try {
-    let data = await Storyblok.get(`cdn/stories`, {
-      starts_with: `en/blog/`,
-    }).then((resp) => resp.data.stories);
-    return {
-      paths: await data.map((post) => {
-        return {
-          params: {
-            language: post.lang,
-            slug: post.slug,
-          },
-        };
-      }),
-      fallback: true,
-    };
-  } catch {
-    return {
-      paths: [
-        {
-          params: {
-            language: 'de',
-            slug: 'my-first-post',
-          },
-        },
-        {
-          params: {
-            language: 'de',
-            slug: 'asian-women-among-eight-killed-at-three-spas',
-          },
-        },
-      ],
-      fallback: false,
-    };
+  let { data } = await Storyblok.get('cdn/links/', {});
+  // let lange = 'th' || 'en';
+  let paths = [];
+  for (const linkKey of Object.keys(data.links)) {
+    if (!data.links[linkKey].is_folder && data.links[linkKey].slug !== 'home') {
+      const host = data.links[linkKey].slug.split('/');
+      const lange = host.slice(0, 1);
+      paths.push({ params: { language: lange[0], slug: data.links[linkKey].slug } });
+    }
   }
+
+  return {
+    paths: paths,
+    fallback: true,
+  };
 }
 
 // This also gets called at build time
 export const getStaticProps = async ({ params }) => {
-  // const { language, slug } = params;
-  //fetcher
-  // const post2 = await getPostBySlug(language, slug);
-  let language = params.language || 'en';
-
-  let blog = await Storyblok.get(`cdn/stories`, {
-    starts_with: `${params.language}/blog/`,
-  }).then((resp) => resp.data.stories);
-  // let sto = blog.find((x) => x.full_slug);
-
-  let ints = params.language === 'en' ? '/blog/' : `${params.language}/blog/`;
-  // full_slug
-  const res = await Storyblok.get(`cdn/stories/${ints}/${params.slug}`).then(
-    (item) => item.data,
-  );
+  let language = params.language;
+  let slug = params.slug;
+  const story = await getPostBySlug(`${language}/blog/${slug}`);
   return {
     props: {
-      story: res,
+      story,
       language,
-      params,
     },
     revalidate: 1,
   };
 };
 
 export default BlogPosts;
-
-// static async getInitialProps({ asPath, query }) {
-//   StoryblokService.setQuery(query);
-
-//   let language = query.language || 'en';
-//   let trimDefault = asPath.replace('/en/blog', '/blog');
-//   let res = await StoryblokService.get(`cdn/stories${trimDefault}`);
-
-//   return {
-//     res,
-//     language,
-//   };
-// }
-// export async function getStaticProps(context) {
-//   StoryblokService.setQuery(query);
-
-//   let language = query.language || 'en';
-//   let trimDefault = asPath.replace('/en/blog', '/blog');
-//   let res = await StoryblokService.get(`cdn/stories${trimDefault}`);
-
-//   return {
-//     res,
-//     language,
-//   };
-// }
