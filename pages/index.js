@@ -46,17 +46,24 @@ const Home = (props) => {
   );
 };
 
-export async function getStaticPaths() {
-  // loads the story from the Storyblok API
-  let { data } = Storyblok.get(`cdn/stories/home`);
-  //   data.then((data) => data.path);
-  let paths = data ? data.story : [];
+export const getStaticPaths = async () => {
   // return the story from Storyblok and whether preview mode is active
+  let { data } = await Storyblok.get('cdn/links/', {});
+  // let lange = 'th' || 'en';
+  let paths = [];
+  for (const linkKey of Object.keys(data.links)) {
+    if (!data.links[linkKey].is_folder && data.links[linkKey].slug !== 'home') {
+      const host = data.links[linkKey].slug.split('/');
+      const lange = host.slice(0, 1);
+      paths.push({ params: { language: lange[0] } });
+    }
+  }
   return {
-    paths,
-    fallback: false,
+    paths: paths,
+    // paths: [{ params: { language: 'en' } }, { params: { language: 'de' } }],
+    fallback: true,
   };
-}
+};
 
 export async function getStaticProps({ params }) {
   let language = params || 'en';
@@ -68,7 +75,7 @@ export async function getStaticProps({ params }) {
   let stories = await Storyblok.get(`cdn/stories/home`).then((data) => {
     data.story;
   });
-  const homepage = await getHome();
+  const homepage = await getHome(`${insertLanguage}/home`);
   // let cont = stories.content.map((item) => {
   //   item.body;
   // });
