@@ -68,10 +68,7 @@ export const getStaticPaths = async () => {
 export async function getStaticProps({ params }) {
   let language = params || 'en';
   let insertLanguage = language !== 'en' ? `/${language}` : '';
-  let { data } = await Storyblok.get(
-    `cdn/stories${insertLanguage}/home`,
-    params,
-  );
+  let { data } = await Storyblok.get(`cdn/stories${insertLanguage}/home`, params);
   let stories = await Storyblok.get(`cdn/stories/home`).then((data) => {
     data.story;
   });
