@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "clean": "rimraf .next",
-    "dev": "next dev",
-    "build": "next build",
+    "create-manifest": "node ./src/lib/createManifest",
+    "dev": "yarn create-manifest && next dev",
+    "build": "yarn create-manifest && next build",
     "start": "next start",
     "export": "next export"
   },
