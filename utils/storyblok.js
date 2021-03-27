@@ -17,9 +17,9 @@ export async function getAllEvents() {
   return stories;
 }
 
-export async function getHome() {
+export async function getHome(lang) {
   const response = await fetch(
-    `https://api.storyblok.com/v1/cdn/stories/home?token=${process.env.STORYBLOK_API_KEY}`,
+    `https://api.storyblok.com/v1/cdn/stories/${lang}?token=${process.env.STORYBLOK_API_KEY}`,
   );
 
   const { story } = await response.json();
