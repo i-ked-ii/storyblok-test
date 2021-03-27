@@ -3,11 +3,7 @@ import Link from 'next/link';
 import moment from 'moment';
 
 import Layout from '../../../components/commons/layouts';
-import Storyblok, {
-  getAllContentFromBlog,
-  getAllEvents,
-  getLink,
-} from '../../../utils/storyblok';
+import Storyblok, { getAllPostsWithSlug, getAllEvents, getLink } from '../../../utils/storyblok';
 
 const Blog = (props) => {
   console.log('props', props);
@@ -25,11 +21,7 @@ const Blog = (props) => {
                 className="overflow-hidden transition-shadow duration-300 bg-white rounded shadow-sm"
                 key={post.slug}
               >
-                <img
-                  src={post.content.image}
-                  className="object-cover w-full h-64"
-                  alt=""
-                />
+                <img src={post.content.image} className="object-cover w-full h-64" alt="" />
                 <div className="p-5 border border-t-0 border-b-0">
                   <p className="mb-3 text-xs font-semibold tracking-wide uppercase">
                     <Link href="/[language]/[slug]" as={`${lang}/${post.slug}`}>
@@ -73,27 +65,47 @@ const Blog = (props) => {
   );
 };
 
-export const getStaticPaths = () => {
+export const getStaticPaths = async () => {
   // return the story from Storyblok and whether preview mode is active
+  let { data } = await Storyblok.get('cdn/links/', {});
+  // let lange = 'th' || 'en';
+  let paths = [];
+  for (const linkKey of Object.keys(data.links)) {
+    if (!data.links[linkKey].is_folder && data.links[linkKey].slug !== 'home') {
+      const host = data.links[linkKey].slug.split('/');
+      const lange = host.slice(0, 1);
+      paths.push({ params: { language: lange[0] } });
+    }
+  }
   return {
-    paths: [{ params: { language: 'en' } }, { params: { language: 'th' } }],
+    paths: paths,
     fallback: false,
   };
 };
 
 export async function getStaticProps({ params }) {
-  let language = params.language || 'en';
+  let language = params.language;
   // let insertLanguage = language !== 'en' ? `${language}/` : '';
   const getAll = await getAllEvents();
-  const allPost = await getAllContentFromBlog();
+  const allPost = await getAllPostsWithSlug(`${language}/blog`);
   const allLink = await getLink(language);
   // let { data } = await Storyblok.get(`cdn/stories`, {
   //   starts_with: `${insertLanguage}blog/`,
   // });
-
+  let { data } = await Storyblok.get('cdn/links/', {});
+  // let lange = 'th' || 'en';
+  let paths = [];
+  for (const linkKey of Object.keys(data.links)) {
+    if (!data.links[linkKey].is_folder && data.links[linkKey].slug !== 'home') {
+      const host = data.links[linkKey].slug.split('/');
+      const lange = host.slice(0, 1);
+      paths.push({ params: { language: lange[0], slug: data.links[linkKey].slug } });
+    }
+  }
   return {
     props: {
       // story: data ? data.stories : false,
+      paths,
       allLink,
       getAll,
       allPost,

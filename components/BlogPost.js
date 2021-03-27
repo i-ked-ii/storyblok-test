@@ -8,13 +8,9 @@ const BlogPost = ({ blok }) => {
     <SbEditable content={blok} key={blok._uid}>
       <div className="bg-white-half w-full">
         <div className="max-w-3xl mx-auto text-center pt-20 flex flex-col items-center">
-          <h1 className="text-5xl font-bold font-serif text-primary tracking-wide">
-            {blok.title}
-          </h1>
+          <h1 className="text-5xl font-bold font-serif text-primary tracking-wide">{blok.title}</h1>
           <p className="text-gray-500 text-lg max-w-lg">{blok.intro}</p>
-          {blok.image && (
-            <img className="w-full bg-gray-300 my-16" src={blok.image} alt="" />
-          )}
+          {blok.image && <img className="w-full bg-gray-300 my-16" src={blok.image} alt="" />}
         </div>
       </div>
       <div className="max-w-3xl mx-auto text-center pt-20 flex flex-col items-center">

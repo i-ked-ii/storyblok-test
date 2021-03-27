@@ -6,14 +6,12 @@ import Layout from '../../components/commons/layouts';
 import BlogPost from '../../components/BlogPost';
 import Storyblok, { getAllContentFromBlog } from '../../utils/storyblok';
 
-import { getAllPostSlug, getLink, getPostBySlug } from '../../utils/storyblok';
+import { getPostBySlug } from '../../utils/storyblok';
 
 const BlogPosts = (props) => {
   const { language, story } = props;
   console.log('props', props);
   const router = useRouter();
-  const [lange] = useState(language);
-  const [posts] = useState(story);
 
   // useEffect(() => {
   //   let data = Storyblok.get(`cdn/stories`, {
@@ -33,11 +31,9 @@ const BlogPosts = (props) => {
   }
 
   return (
-    <Layout language={lange}>
+    <Layout language={language}>
       <div className="container mx-auto mt-10 py-10 bg-white">
-        test
-        {/* <BlogPost blok={story && story.story.content} /> */}
-        {/* {posts ? <BlogPost blok={posts.data.story.content} /> : 'no data'} */}
+        <BlogPost blok={story && story.content} />
       </div>
     </Layout>
   );
@@ -46,23 +42,31 @@ const BlogPosts = (props) => {
 export async function getStaticPaths() {
   // Call an external API endpoint to get posts
   const allPost = await getAllContentFromBlog();
-  const paths = allPost.map((post) => {
-    return post.slug;
-  });
-  // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
+  let { data } = await Storyblok.get('cdn/links/', {});
+  // let lange = 'th' || 'en';
+  let paths = [];
+  for (const linkKey of Object.keys(data.links)) {
+    if (!data.links[linkKey].is_folder && data.links[linkKey].slug !== 'home') {
+      const host = data.links[linkKey].slug.split('/');
+      const lange = host.slice(0, 1);
+      paths.push({ params: { language: lange[0], slug: data.links[linkKey].slug } });
+    }
+  }
+
   return {
-    paths: [{ params: { language: 'en', slug: 'test' } }],
-    // fallback: true,
-    fallback: false,
+    paths: paths,
+    fallback: true,
   };
 }
 
 // This also gets called at build time
 export const getStaticProps = async ({ params }) => {
-  let language = params.language || 'en';
+  let language = params.language;
+  let slug = params.slug;
+  const story = await getPostBySlug(`${language}/blog/${slug}`);
   return {
     props: {
+      story,
       language,
     },
     revalidate: 1,

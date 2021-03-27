@@ -27,9 +27,9 @@ export async function getHome() {
 }
 
 // Get all content from the news folder
-export async function getAllContentFromBlog() {
+export async function getAllContentFromBlog(slug) {
   const response = await fetch(
-    `https://api.storyblok.com/v1/cdn/stories/?per_page=2&page=1&starts_with=blog/&token=${process.env.STORYBLOK_API_KEY}`,
+    `https://api.storyblok.com/v1/cdn/stories/?starts_with=th/blog/&token=${process.env.STORYBLOK_API_KEY}`,
   );
 
   const { stories } = await response.json();
@@ -51,9 +51,9 @@ export async function getLink(lang) {
 }
 
 // get all slugs of posts
-export async function getAllPostsWithSlug() {
+export async function getAllPostsWithSlug(lang) {
   const response = await fetch(
-    `https://api.storyblok.com/v1/cdn/stories/?starts_with=blog/&token=${process.env.STORYBLOK_API_KEY}`,
+    `https://api.storyblok.com/v1/cdn/stories/?starts_with=${lang}/&token=${process.env.STORYBLOK_API_KEY}`,
   );
   const { stories } = await response.json();
   return stories;
