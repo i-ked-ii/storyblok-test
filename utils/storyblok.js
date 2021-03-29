@@ -11,7 +11,7 @@ const client = new StoryblokClient({
 
 export async function getAllEvents() {
   const response = await fetch(
-    `https://api.storyblok.com/v1/cdn/stories?token=${process.env.STORYBLOK_API_KEY}`,
+    `${process.env.STORYBLOK_BASE_URL}/stories?token=${process.env.STORYBLOK_API_KEY}`,
   );
   const { stories } = await response.json();
   return stories;
@@ -19,21 +19,11 @@ export async function getAllEvents() {
 
 export async function getHome(lang) {
   const response = await fetch(
-    `https://api.storyblok.com/v1/cdn/stories/${lang}?token=${process.env.STORYBLOK_API_KEY}`,
+    `${process.env.STORYBLOK_BASE_URL}/stories/${lang}?token=${process.env.STORYBLOK_API_KEY}`,
   );
 
   const { story } = await response.json();
   return story;
-}
-
-// Get all content from the news folder
-export async function getAllContentFromBlog(slug) {
-  const response = await fetch(
-    `https://api.storyblok.com/v1/cdn/stories/?starts_with=th/blog/&token=${process.env.STORYBLOK_API_KEY}`,
-  );
-
-  const { stories } = await response.json();
-  return stories;
 }
 
 function parsePostSlug({ post }) {
@@ -41,19 +31,19 @@ function parsePostSlug({ post }) {
     slug: post.full_slug,
   };
 }
-
+// get all slugs of posts
 export async function getLink(lang) {
   const response = await fetch(
-    `https://api.storyblok.com/v1/cdn/links/?starts_with=${lang}/&token=${process.env.STORYBLOK_API_KEY}`,
+    `${process.env.STORYBLOK_BASE_URL}/links/?starts_with=${lang}/&token=${process.env.STORYBLOK_API_KEY}`,
   );
   const { links } = await response.json();
   return links;
 }
 
-// get all slugs of posts
-export async function getAllPostsWithSlug(lang) {
+// Get all content from the news folder
+export async function getAllPostsWithSlug(slug) {
   const response = await fetch(
-    `https://api.storyblok.com/v1/cdn/stories/?starts_with=${lang}/&token=${process.env.STORYBLOK_API_KEY}`,
+    `${process.env.STORYBLOK_BASE_URL}/stories/?starts_with=${slug}/&token=${process.env.STORYBLOK_API_KEY}`,
   );
   const { stories } = await response.json();
   return stories;
@@ -62,7 +52,7 @@ export async function getAllPostsWithSlug(lang) {
 // get Content By slug
 export async function getPostBySlug(full_slug) {
   const response = await fetch(
-    `https://api.storyblok.com/v1/cdn/stories/${full_slug}?token=${process.env.STORYBLOK_API_KEY}`,
+    `${process.env.STORYBLOK_BASE_URL}/stories/${full_slug}?token=${process.env.STORYBLOK_API_KEY}`,
   );
   const { story } = await response.json();
   return story;

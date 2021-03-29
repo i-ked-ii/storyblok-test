@@ -2,12 +2,17 @@ require('dotenv').config();
 const { withPlugins } = require('next-compose-plugins');
 const withCSS = require('@zeit/next-css');
 const withFonts = require('next-fonts');
+const path = require('path');
 
 const nextConfigs = {
   // i18n: {
   //   defaultLocale: 'en',
   //   locales: ['en', 'de'],
   // },
+  distDir: 'build',
+  reactStrictMode: true,
+  // assetPrefix: !debug ? '/out' : '',
+  trailingSlash: false,
   env: {
     // API_BASE_URL: process.env.API_BASE_URL || 'http://127.0.0.1:3003/v1',
     STORYBLOK_API_KEY: process.env.STORYBLOK_API_KEY,
@@ -29,6 +34,12 @@ const nextConfigs = {
   //     // { source: '/:language/blog/:slug', destination: '/:language/blog/:slug' },
   //   ];
   // },
+  // exportPathMap: async function () {
+  //   return {
+  //     '/': { page: '/' },
+  //     '/th': { page: '/[language]' },
+  //   };
+  // },
   async rewrites() {
     return [
       {
@@ -37,9 +48,23 @@ const nextConfigs = {
       },
       // Optional Language
       // Query object shape: { lang?: string }
-      { source: '/:language(en|de)?/contact', destination: '/contact' },
-      // { source: '/:language(en|de)?/blog', destination: '/blog' },
+      { source: '/:language/contact-us', destination: '/:language/contact-us' },
+      {
+        source: '/:language/blog',
+        destination: '/:language/blog',
+      },
+      { source: '/:language/about-us', destination: '/:language/about-us' },
+      { source: '/:language/brands', destination: '/:language/brands' },
+      { source: '/:language/career', destination: '/:language/career' },
+      { source: '/:language/our-stories', destination: '/:language/our-stories' },
+      {
+        source: '/:language/innovation-and-newsroom',
+        destination: '/:language/innovation-and-newsroom',
+      },
     ];
+  },
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'styles')],
   },
 };
 

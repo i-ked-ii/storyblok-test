@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Layout from '../../../components/commons/layouts';
 import FeedbackForm from '../../../components/FeedbackForm';
 
+import Storyblok from '../../../utils/storyblok';
+
 const Contact = (props) => {
   const services = {
     service_id: process.env.REACT_APP_EMAILJS_SERVICEID,
@@ -19,16 +21,26 @@ const Contact = (props) => {
   );
 };
 
-export const getStaticPaths = () => {
+export const getStaticPaths = async () => {
   // return the story from Storyblok and whether preview mode is active
+  let { data } = await Storyblok.get('cdn/links/', {});
+  // let lange = 'th' || 'en';
+  let paths = [];
+  for (const linkKey of Object.keys(data.links)) {
+    if (!data.links[linkKey].is_folder && data.links[linkKey].slug !== 'home') {
+      const host = data.links[linkKey].slug.split('/');
+      const lange = host.slice(0, 1);
+      paths.push({ params: { language: lange[0] } });
+    }
+  }
   return {
-    paths: [{ params: { language: 'en' } }, { params: { language: 'de' } }],
-    fallback: false,
+    paths: paths,
+    fallback: true,
   };
 };
 
 export async function getStaticProps({ params }) {
-  let language = params.language || 'en';
+  let language = params.language;
 
   return {
     props: {

@@ -38,6 +38,53 @@ const Nav = (props) => {
           </Link>
           <ul className="flex items-center hidden space-x-8 lg:flex">
             <li>
+              <Link href="/[language]/about-us" as={`/${language}/about-us`}>
+                <a
+                  aria-label="About us"
+                  title="About us"
+                  className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
+                >
+                  About us
+                </a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/[language]/our-stories" as={`/${language}/our-stories`}>
+                <a
+                  aria-label="Our Stories"
+                  title="Our Stories"
+                  className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
+                >
+                  Our Stories
+                </a>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/[language]/innovation-and-newsroom"
+                as={`/${language}/innovation-and-newsroom`}
+              >
+                <a
+                  aria-label="Innovation & Newsroom"
+                  title="Innovation & Newsroom"
+                  className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
+                >
+                  Innovation & Newsroom
+                </a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/[language]/brands" as={`/${language}/brands`}>
+                <a
+                  aria-label="Brands"
+                  title="Brands"
+                  className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
+                >
+                  Brands
+                </a>
+              </Link>
+            </li>
+            <li>
               <Link href="/[language]/blog" as={`/${language}/blog`}>
                 <a
                   aria-label="Our product"
@@ -49,24 +96,24 @@ const Nav = (props) => {
               </Link>
             </li>
             <li>
-              <Link href="/[language]/contact" as={`/${language}/contact`}>
+              <Link href="/[language]/career" as={`/${language}/career`}>
+                <a
+                  aria-label="Career"
+                  title="Career"
+                  className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
+                >
+                  Career
+                </a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/[language]/contact-us" as={`/${language}/contact-us`}>
                 <a
                   aria-label="Product pricing"
                   title="Product pricing"
                   className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
                 >
-                  Contact
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href={`/`}>
-                <a
-                  aria-label="About us"
-                  title="About us"
-                  className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
-                >
-                  About us
+                  Contact Us
                 </a>
               </Link>
             </li>
@@ -120,11 +167,7 @@ const Nav = (props) => {
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <Link href={`/`}>
-                      <a
-                        aria-label="Company"
-                        title="Company"
-                        className="inline-flex items-center"
-                      >
+                      <a aria-label="Company" title="Company" className="inline-flex items-center">
                         <svg
                           className="w-8 text-deep-purple-accent-400"
                           viewBox="0 0 24 24"
@@ -171,7 +214,43 @@ const Nav = (props) => {
                           title="Our product"
                           className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
                         >
-                          Home
+                          About Us
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href={`/`}>
+                        <a
+                          aria-label="Our product"
+                          title="Our product"
+                          className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
+                        >
+                          Our Stories
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/[language]/innovation-and-newsroom"
+                        as={`/${language}/innovation-and-newsroom`}
+                      >
+                        <a
+                          aria-label="Innovation & Newsroom"
+                          title="Innovation & Newsroom"
+                          className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
+                        >
+                          Innovation & Newsroom
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/[language]/brands" as={`/${language}/brands`}>
+                        <a
+                          aria-label="Brands"
+                          title="Brands"
+                          className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
+                        >
+                          Brands
                         </a>
                       </Link>
                     </li>
@@ -187,27 +266,24 @@ const Nav = (props) => {
                       </Link>
                     </li>
                     <li>
-                      <Link
-                        href="/[language]/contact"
-                        as={`/${language}/contact`}
-                      >
+                      <Link href="/[language]/career" as={`/${language}/career`}>
                         <a
-                          aria-label="Product pricing"
-                          title="Product pricing"
+                          aria-label="Career"
+                          title="Career"
                           className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
                         >
-                          Contact
+                          Career
                         </a>
                       </Link>
                     </li>
                     <li>
-                      <Link href={`/`}>
+                      <Link href="/[language]/contact-us" as={`/${language}/contact-us`}>
                         <a
-                          aria-label="About us"
-                          title="About us"
+                          aria-label="Contact Us"
+                          title="Contact Us"
                           className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
                         >
-                          About us
+                          Contact Us
                         </a>
                       </Link>
                     </li>

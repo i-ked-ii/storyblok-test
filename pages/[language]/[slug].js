@@ -48,10 +48,10 @@ export async function getStaticPaths() {
       paths.push({ params: { language: lange[0], slug: data.links[linkKey].slug } });
     }
   }
-
+  console.log(paths);
   return {
     paths: paths,
-    fallback: true,
+    fallback: false,
   };
 }
 

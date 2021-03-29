@@ -16,7 +16,7 @@ const Components = {
 };
 
 const DynamicComponent = ({ blok }) => {
-  console.log('blok', blok);
+  // console.log('blok', blok);
   // check if component is defined above
   if (typeof Components[blok.component] !== 'undefined') {
     const Component = Components[blok.component];

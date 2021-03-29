@@ -3,7 +3,7 @@ import Link from 'next/link';
 import moment from 'moment';
 
 import Layout from '../../../components/commons/layouts';
-import Storyblok, { getAllPostsWithSlug, getAllEvents, getLink } from '../../../utils/storyblok';
+import Storyblok, { getAllPostsWithSlug, getLink } from '../../../utils/storyblok';
 
 const Blog = (props) => {
   console.log('props', props);
@@ -71,12 +71,17 @@ export const getStaticPaths = async () => {
   // let lange = 'th' || 'en';
   let paths = [];
   for (const linkKey of Object.keys(data.links)) {
-    if (!data.links[linkKey].is_folder && data.links[linkKey].slug !== 'home') {
+    if (
+      !data.links[linkKey].is_folder &&
+      data.links[linkKey].slug !== 'en/home' &&
+      data.links[linkKey].slug !== 'th/home'
+    ) {
       const host = data.links[linkKey].slug.split('/');
       const lange = host.slice(0, 1);
       paths.push({ params: { language: lange[0] } });
     }
   }
+  console.log(paths);
   return {
     paths: paths,
     fallback: false,
@@ -86,29 +91,17 @@ export const getStaticPaths = async () => {
 export async function getStaticProps({ params }) {
   let language = params.language;
   // let insertLanguage = language !== 'en' ? `${language}/` : '';
-  const getAll = await getAllEvents();
-  const allPost = await getAllPostsWithSlug(`${language}/blog`);
+  const tt = await getAllPostsWithSlug(`${language}/blog`);
   const allLink = await getLink(language);
-  // let { data } = await Storyblok.get(`cdn/stories`, {
-  //   starts_with: `${insertLanguage}blog/`,
-  // });
-  let { data } = await Storyblok.get('cdn/links/', {});
-  // let lange = 'th' || 'en';
-  let paths = [];
-  for (const linkKey of Object.keys(data.links)) {
-    if (!data.links[linkKey].is_folder && data.links[linkKey].slug !== 'home') {
-      const host = data.links[linkKey].slug.split('/');
-      const lange = host.slice(0, 1);
-      paths.push({ params: { language: lange[0], slug: data.links[linkKey].slug } });
-    }
-  }
+  let { data } = await Storyblok.get(`cdn/stories`, {
+    starts_with: `th/blog`,
+  });
+  console.log('tt', data);
   return {
     props: {
       // story: data ? data.stories : false,
-      paths,
       allLink,
-      getAll,
-      allPost,
+      allPost: [],
       language,
     },
   };
