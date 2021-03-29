@@ -8,9 +8,7 @@ const CountdownBox = ({ left, divideBy, label }) => {
           <circle stroke="#1df9ba" strokeWidth="9" r="47" cx="55" cy="55" />
           <circle
             stroke="#058862"
-            strokeDashoffset={
-              -((left / divideBy) * 47 * 2 * Math.PI) + 47 * 2 * Math.PI
-            }
+            strokeDashoffset={-((left / divideBy) * 47 * 2 * Math.PI) + 47 * 2 * Math.PI}
             strokeDasharray={47 * 2 * Math.PI}
             strokeWidth="3"
             r="47"

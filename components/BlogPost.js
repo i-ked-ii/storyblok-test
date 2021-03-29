@@ -5,6 +5,7 @@ import { render } from 'storyblok-rich-text-react-renderer';
 const BlogPost = ({ blok }) => {
   // console.log('blok', blok);
   return (
+    // <div>blok</div>
     <SbEditable content={blok} key={blok._uid}>
       <div className="bg-white-half w-full">
         <div className="max-w-3xl mx-auto text-center pt-20 flex flex-col items-center">

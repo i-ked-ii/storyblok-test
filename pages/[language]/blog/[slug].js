@@ -2,9 +2,9 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import ErrorPage from 'next/error';
 
-import Layout from '../../components/commons/layouts';
-import BlogPost from '../../components/BlogPost';
-import Storyblok, { getPostBySlug } from '../../utils/storyblok';
+import Layout from '../../../components/commons/layouts';
+import BlogPost from '../../../components/BlogPost';
+import Storyblok, { getPostBySlug } from '../../../utils/storyblok';
 
 const BlogPosts = (props) => {
   const { language, story } = props;
@@ -50,7 +50,7 @@ export async function getStaticPaths() {
   }
   return {
     paths: paths,
-    fallback: true,
+    fallback: false,
   };
 }
 

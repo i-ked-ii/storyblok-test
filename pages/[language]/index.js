@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import IsoTopeGrid, { Card } from 'react-isotope';
 
 import Page from '../../components/Page';
 import Layout from '../../components/commons/layouts';
+import IsoTope from '../../components/commons/IsoTope';
 
 // The Storyblok Client
 import Storyblok, { getHome } from '../../utils/storyblok';
@@ -65,34 +65,14 @@ const HomeTh = (props) => {
 
   return (
     <Layout language={language}>
-      <div className="filter-container">
-        {filters.map((f) => (
-          <div className="filter" key={`${f.label}_key`}>
-            <input
-              id={f.label}
-              type="radio"
-              value={f.label}
-              name={f.label}
-              onChange={onFilter}
-              checked={f.isChecked}
-            />
-            <label htmlFor={f.label}>{f.label}</label>
-          </div>
-        ))}
-      </div>
-      <IsoTopeGrid
-        gridLayout={cardsDefault}
-        noOfCols={4}
-        unitWidth={200}
-        unitHeight={100}
-        filters={filters}
-      >
-        {cardsDefault.map((card) => (
-          <div key={card.id} className={card.filter[0]}>
-            {card.id}
-          </div>
-        ))}
-      </IsoTopeGrid>
+      <IsoTope
+        filter={filters}
+        data={cardsDefault}
+        onFilter={onFilter}
+        cardCol={3}
+        cardWidth={250}
+        cardHeight={100}
+      />
       <Page content={response && response.content} />
     </Layout>
   );
@@ -110,7 +90,6 @@ export const getStaticPaths = async () => {
       paths.push({ params: { language: lange[0] } });
     }
   }
-  console.log(paths);
   return {
     paths: paths,
     // paths: [{ params: { language: 'en' } }, { params: { language: 'de' } }],
@@ -168,7 +147,6 @@ export default HomeTh;
 // //     }
 
 // //     render() {
-// //         console.log('language', this.state);
 // //         const contentOfStory = this.state.story.content;
 
 // //         return (

@@ -6,7 +6,6 @@ import Layout from '../../../components/commons/layouts';
 import Storyblok, { getAllPostsWithSlug, getLink } from '../../../utils/storyblok';
 
 const Blog = (props) => {
-  console.log('props', props);
   const { language, allPost } = props;
   const [lange] = useState(language);
   const [posts] = useState(allPost);
@@ -81,7 +80,6 @@ export const getStaticPaths = async () => {
       paths.push({ params: { language: lange[0] } });
     }
   }
-  console.log(paths);
   return {
     paths: paths,
     fallback: false,
@@ -96,7 +94,6 @@ export async function getStaticProps({ params }) {
   let { data } = await Storyblok.get(`cdn/stories`, {
     starts_with: `th/blog`,
   });
-  console.log('tt', data);
   return {
     props: {
       // story: data ? data.stories : false,

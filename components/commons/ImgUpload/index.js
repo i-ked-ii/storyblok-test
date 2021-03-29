@@ -5,7 +5,6 @@ const ImgUpload = (props) => {
   const [name, setName] = useState('');
   const handleChange = (e) => {
     const file = e.currentTarget.files[0];
-    // console.log("file", file);
     setName(file.name);
     const reader = new FileReader();
     // const imgTag = document.getElementById("myimage");

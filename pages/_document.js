@@ -4,9 +4,7 @@ import { ServerStyleSheet } from 'styled-components';
 class MyDocument extends Document {
   static getInitialProps({ renderPage, pathname }) {
     const sheet = new ServerStyleSheet();
-    const page = renderPage((App) => (props) =>
-      sheet.collectStyles(<App {...props} />),
-    );
+    const page = renderPage((App) => (props) => sheet.collectStyles(<App {...props} />));
     const styleTags = sheet.getStyleElement();
     return { ...page, pathname, styleTags };
   }
@@ -14,7 +12,9 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="th">
-        <Head />
+        <Head>
+          <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
+        </Head>
         <body>
           <Main />
           <NextScript />

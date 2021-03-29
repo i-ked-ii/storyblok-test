@@ -2,7 +2,6 @@ import React from 'react';
 import SbEditable from 'storyblok-react';
 
 const FeaturedPosts = ({ blok }) => {
-  // console.log('blok', blok);
   return (
     <SbEditable content={blok} key={blok._uid}>
       <div className="featured-post py-8 mb-6 container mx-auto text-left" key={blok._uid}>

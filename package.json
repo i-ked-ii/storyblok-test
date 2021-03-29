@@ -45,7 +45,7 @@
     "handlebars": "^4.7.7",
     "isotope-layout": "^3.0.6",
     "moment": "^2.29.1",
-    "next": "10.0.9",
+    "next": "^10.0.9",
     "next-compose-plugins": "^2.2.1",
     "next-fonts": "^1.5.1",
     "next-i18next": "^8.1.2",
