@@ -16,7 +16,8 @@ export async function getAllEvents() {
   const { stories } = await response.json();
   return stories;
 }
-
+// pagination
+// https://api.storyblok.com/v1/cdn/stories/?per_page=2&page=1&starts_with=posts/&token=ask9soUkv02QqbZgmZdeDAtt
 export async function getHome(lang) {
   const response = await fetch(
     `${process.env.STORYBLOK_BASE_URL}/stories/?resolve_relations=featured-posts.posts&starts_with=${lang}/&token=${process.env.STORYBLOK_API_KEY}`,
