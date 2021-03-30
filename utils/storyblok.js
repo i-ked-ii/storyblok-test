@@ -19,7 +19,8 @@ export async function getAllEvents() {
 
 export async function getHome(lang) {
   const response = await fetch(
-    `${process.env.STORYBLOK_BASE_URL}/stories/${lang}?token=${process.env.STORYBLOK_API_KEY}`,
+    `${process.env.STORYBLOK_BASE_URL}/stories/?resolve_relations=featured-posts.posts&starts_with=${lang}/&token=${process.env.STORYBLOK_API_KEY}`,
+    // `${process.env.STORYBLOK_BASE_URL}/stories/${lang}?token=${process.env.STORYBLOK_API_KEY}`,
   );
 
   const { story } = await response.json();

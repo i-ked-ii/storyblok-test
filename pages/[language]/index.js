@@ -137,7 +137,7 @@ const HomeTh = (props) => {
         gutter="16px"
         columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}
       />
-      <Page content={response && response.content} />
+      <Page content={response && response.data.story.content} />
     </Layout>
   );
 };
@@ -163,7 +163,10 @@ export const getStaticPaths = async () => {
 
 export async function getStaticProps({ params }) {
   let language = params.language;
-  const response = await getHome(`${params.language}/home`);
+  let response = await Storyblok.get(`cdn/stories/${language}/home`, {
+    resolve_relations: 'featured-posts.posts',
+  });
+  // const response = await getHome(`${params.language}/home`);
   if (!response) {
     return {
       redirect: {

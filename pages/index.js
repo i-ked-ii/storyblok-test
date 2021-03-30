@@ -4,7 +4,7 @@ import Layout from '../components/commons/layouts';
 import Header from '../components/Header';
 
 // The Storyblok Client
-import { getHome } from '../utils/storyblok';
+import Storyblok, { getHome } from '../utils/storyblok';
 
 const images = [
   {
@@ -32,14 +32,17 @@ const Home = (props) => {
     <Layout language={language}>
       <Carousel slideValues={images} align="center" />
       <Header />
-      <Page content={homepage.content} />
+      <Page content={homepage && homepage.data.story.content} />
     </Layout>
   );
 };
 
 export async function getStaticProps() {
   const language = 'en';
-  const homepage = await getHome(`en/home`);
+  // const homepage = await getHome(`en/home`);
+  let homepage = await Storyblok.get(`cdn/stories/${language}/home`, {
+    resolve_relations: 'featured-posts.posts',
+  });
   if (!homepage) {
     return {
       redirect: {

@@ -26,19 +26,21 @@ const IsoTope = (props) => {
 
   const [filt, updateFilters] = useState('all');
   const [que, setQue] = useState(data);
-  console.log('c', que);
 
   const getData = () => {
     setQue(data);
   };
 
   const onFilter = (val) => {
-    console.log('val', val);
-    setQue(que.filter((cah) => cah.filter.includes(val)));
-    updateFilters(val);
+    if (val !== 'all') {
+      setQue(que.filter((cah) => cah.filter.includes(val)));
+      updateFilters(val);
+    } else {
+      setQue(data);
+    }
     // setQue((state) => state.map((f) => f.filter.map((i) => i === filt)));
   };
-
+  console.log('que', que);
   return (
     <div>
       {/* <div className="filter-container">
