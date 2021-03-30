@@ -202,5 +202,8 @@ const Footer = (props) => {
 Footer.propTypes = {
   className: PropTypes.string,
 };
+Footer.defaultProps = {
+  className: '',
+};
 
 export default Footer;

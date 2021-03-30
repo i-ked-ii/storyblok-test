@@ -6,7 +6,7 @@ const Footer = (props) => {
   return (
     <footer className="text-gray-600 body-font">
       <div
-        className={`container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col ${className}`}
+        className={`max-w-7xl mx-auto px-4 2xl:px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col ${className}`}
       >
         <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
           <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
@@ -108,7 +108,7 @@ const Footer = (props) => {
         </div>
       </div>
       <div className="bg-gray-100">
-        <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
+        <div className=" max-w-7xl mx-auto px-4 2xl:px-5 py-5 flex flex-wrap flex-col sm:flex-row">
           <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -136,7 +136,7 @@ const Footer = (props) => {
             </a>
           </p>
 
-          <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
+          <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start items-center">
             <a className="text-gray-500">
               <svg
                 fill="currentColor"
@@ -201,6 +201,9 @@ const Footer = (props) => {
 
 Footer.propTypes = {
   className: PropTypes.string,
+};
+Footer.defaultProps = {
+  className: '',
 };
 
 export default Footer;

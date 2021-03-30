@@ -87,99 +87,93 @@ export async function getPostBySlug(full_slug) {
 //   });
 
 // init with access token
-const Storyblok = new StoryblokClient({
-  accessToken: '6OGHIpYFngjni2xlE9Valgtt' || process.env.STORYBLOK_API_KEY,
-  cache: {
-    clear: 'auto',
-    type: 'memory',
-  },
-});
+// const Storyblok = new StoryblokClient({
+//   accessToken: '6OGHIpYFngjni2xlE9Valgtt' || process.env.STORYBLOK_API_KEY,
+//   cache: {
+//     clear: 'auto',
+//     type: 'memory',
+//   },
+// });
 
-export default Storyblok;
-// class StoryblokService {
-//     constructor() {
-//         this.devMode = true; // Always loads draft
-//         this.token = '6OGHIpYFngjni2xlE9Valgtt' || process.env.STORYBLOK_API_KEY;
-//         this.client = new StoryblokClient({
-//             accessToken: this.token,
-//             cache: {
-//                 clear: 'auto',
-//                 type: 'memory'
-//             }
-//         });
+// export default Storyblok;
 
-//         this.query = {};
-//     }
+class StoryblokService {
+  constructor() {
+    this.devMode = true; // Always loads draft
+    this.token = process.env.STORYBLOK_API_KEY;
+    this.client = new StoryblokClient({
+      accessToken: this.token,
+      cache: {
+        clear: 'auto',
+        type: 'memory',
+      },
+    });
 
-//     getCacheVersion() {
-//         return this.client.cacheVersion;
-//     }
+    this.query = {};
+  }
 
-//     // ask Storyblok's Content API for content of story
-//     get(slug, params) {
-//         params = params || {};
+  getCacheVersion() {
+    return this.client.cacheVersion;
+  }
 
-//         if (
-//             this.getQuery('_storyblok') ||
-//             this.devMode ||
-//             (typeof window !== 'undefined' && window.storyblok)
-//         ) {
-//             params.version = 'draft';
-//         }
+  // ask Storyblok's Content API for content of story
+  get(slug, params) {
+    params = params || {};
 
-//         if (typeof window !== 'undefined' && typeof window.StoryblokCacheVersion !== 'undefined') {
-//             params.cv = window.StoryblokCacheVersion;
-//         }
+    if (
+      this.getQuery('_storyblok') ||
+      this.devMode ||
+      (typeof window !== 'undefined' && window.storyblok)
+    ) {
+      params.version = 'draft';
+    }
 
-//         return this.client.get(slug, params);
-//     }
+    if (typeof window !== 'undefined' && typeof window.StoryblokCacheVersion !== 'undefined') {
+      params.cv = window.StoryblokCacheVersion;
+    }
 
-//     // initialize the connection between Storyblok & Next.js in Visual Editor
-//     initEditor(reactComponent) {
-//         if (window.storyblok) {
-//             window.storyblok.init();
+    return this.client.get(slug, params);
+  }
 
-//             // reload on Next.js page on save or publish event in Storyblok Visual Editor
-//             window.storyblok.on(['change', 'published'], () => location.reload(true));
+  // initialize the connection between Storyblok & Next.js in Visual Editor
+  initEditor(reactComponent) {
+    if (window.storyblok) {
+      window.storyblok.init();
 
-//             // Update state.story on input in Visual Editor
-//             // this will alter the state and replaces the current story with a current raw story object and resolve relations
-//             window.storyblok.on('input', (event) => {
-//                 if (event.story.content._uid === reactComponent.state.story.content._uid) {
-//                     event.story.content = window.storyblok.addComments(
-//                         event.story.content,
-//                         event.story.id
-//                     );
-//                     window.storyblok.resolveRelations(
-//                         event.story,
-//                         ['featured-articles.articles'],
-//                         () => {
-//                             reactComponent.setState({
-//                                 story: event.story
-//                             });
-//                         }
-//                     );
-//                 }
-//             });
-//         }
-//     }
+      // reload on Next.js page on save or publish event in Storyblok Visual Editor
+      window.storyblok.on(['change', 'published'], () => location.reload(true));
 
-//     setQuery(query) {
-//         this.query = query;
-//     }
+      // Update state.story on input in Visual Editor
+      // this will alter the state and replaces the current story with a current raw story object and resolve relations
+      window.storyblok.on('input', (event) => {
+        if (event.story.content._uid === reactComponent.state.story.content._uid) {
+          event.story.content = window.storyblok.addComments(event.story.content, event.story.id);
+          window.storyblok.resolveRelations(event.story, ['featured-articles.articles'], () => {
+            reactComponent.setState({
+              story: event.story,
+            });
+          });
+        }
+      });
+    }
+  }
 
-//     getQuery(param) {
-//         return this.query[param];
-//     }
+  setQuery(query) {
+    this.query = query;
+  }
 
-//     bridge() {
-//         if (!this.getQuery('_storyblok') && !this.devMode) {
-//             return '';
-//         }
-//         return <script src={'//app.storyblok.com/f/storyblok-latest.js?t=' + this.token}></script>;
-//     }
-// }
+  getQuery(param) {
+    return this.query[param];
+  }
 
-// const storyblokInstance = new StoryblokService();
+  bridge() {
+    if (!this.getQuery('_storyblok') && !this.devMode) {
+      return '';
+    }
+    return <script src={'//app.storyblok.com/f/storyblok-latest.js?t=' + this.token}></script>;
+  }
+}
 
-// export default storyblokInstance;
+const storyblokInstance = new StoryblokService();
+
+export default storyblokInstance;

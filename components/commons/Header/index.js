@@ -17,15 +17,11 @@ const Header = (props) => {
           <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
             The quick, brown fox
             <br className="hidden md:block" />
-            jumps over{' '}
-            <span className="inline-block text-deep-purple-accent-400">
-              a lazy dog
-            </span>
+            jumps over <span className="inline-block text-deep-purple-accent-400">a lazy dog</span>
           </h2>
           <p className="text-base text-gray-700 md:text-lg">
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-            accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-            quae. explicabo.
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+            laudantium, totam rem aperiam, eaque ipsa quae. explicabo.
           </p>
         </div>
         <div className="flex items-center">
@@ -55,6 +51,11 @@ const Header = (props) => {
   );
 };
 
-Header.propTypes = {};
+Header.propTypes = {
+  className: PropTypes.string,
+};
+Header.defaultProps = {
+  className: '',
+};
 
 export default Header;
